@@ -29,7 +29,7 @@ object FileDirectory {
      * @author paulburke
      */
     fun getImagePathFromURI(context:Context, uri:Uri): String? {
-        var cursor = context.getContentResolver().query(uri, null, null, null, null)
+        var cursor = context.contentResolver.query(uri, null, null, null, null)
         var path:String? = null
         if (cursor != null)
         {
@@ -37,7 +37,7 @@ object FileDirectory {
             var document_id = cursor.getString(0)
             document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
             cursor.close()
-            cursor = context.getContentResolver().query(
+            cursor = context.contentResolver.query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", arrayOf(document_id), null)
             if (cursor != null)
             {
@@ -71,9 +71,7 @@ object FileDirectory {
 
                 try {
                     getImagePathFromURI(context,uri)
-                } catch (e: ArithmeticException) {
-                    print("image===")
-                }
+                } catch (e: ArithmeticException) {}
 
                 val id = DocumentsContract.getDocumentId(uri)
                 val contentUri = ContentUris.withAppendedId(
