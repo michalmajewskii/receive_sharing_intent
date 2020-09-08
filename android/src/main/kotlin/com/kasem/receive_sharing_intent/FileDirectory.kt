@@ -76,6 +76,7 @@ object FileDirectory {
                 }
 
                 val id = DocumentsContract.getDocumentId(uri)
+                print("test===")
                 val contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
 
