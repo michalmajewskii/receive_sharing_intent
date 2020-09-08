@@ -28,6 +28,28 @@ object FileDirectory {
      * @param uri The Uri to query.
      * @author paulburke
      */
+    fun getImagePathFromURI(context:Context, uri:Uri): String? {
+        var cursor = context.getContentResolver().query(uri, null, null, null, null)
+        var path:String? = null
+        if (cursor != null)
+        {
+            cursor.moveToFirst()
+            var document_id = cursor.getString(0)
+            document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
+            cursor.close()
+            cursor = context.getContentResolver().query(
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", arrayOf<String>(document_id), null)
+            if (cursor != null)
+            {
+                cursor.moveToFirst()
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+                cursor.close()
+            }
+        }
+        print( "getImagePathFromURI " + path)
+        return path
+    }
+
     fun getAbsolutePath(context: Context, uri: Uri): String? {
 
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
@@ -46,7 +68,7 @@ object FileDirectory {
 
                 // TODO handle non-primary volumes
             } else if (isDownloadsDocument(uri)) {
-
+                getImagePathFromURI(context,uri)
                 val id = DocumentsContract.getDocumentId(uri)
                 val contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
