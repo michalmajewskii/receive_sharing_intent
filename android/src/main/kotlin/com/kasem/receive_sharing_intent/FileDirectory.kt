@@ -38,7 +38,7 @@ object FileDirectory {
             document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
             cursor.close()
             cursor = context.getContentResolver().query(
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", arrayOf<String>(document_id), null)
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", arrayOf(document_id), null)
             if (cursor != null)
             {
                 cursor.moveToFirst()
@@ -76,7 +76,6 @@ object FileDirectory {
                 }
 
                 val id = DocumentsContract.getDocumentId(uri)
-                print("test===")
                 val contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
 
