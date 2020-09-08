@@ -68,7 +68,13 @@ object FileDirectory {
 
                 // TODO handle non-primary volumes
             } else if (isDownloadsDocument(uri)) {
-                getImagePathFromURI(context,uri)
+
+                try {
+                    getImagePathFromURI(context,uri)
+                } catch (e: ArithmeticException) {
+                    print("image===")
+                }
+
                 val id = DocumentsContract.getDocumentId(uri)
                 val contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
